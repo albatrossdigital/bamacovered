@@ -4,12 +4,12 @@ query = void 0;
 
 tab = void 0;
 
-rev = 0.14;
+rev = 0.1;
 
 activeTab = void 0;
 
 window.onload = function() {
-  var $about, $search, activate, data, filters, locationUpdated, map, params, queries, resizeMap, updateMarkers;
+  var $about, activate, data, filters, locationUpdated, map, params, queries, resizeMap, updateMarkers;
   queries = [
     {
       context: "mobile",
@@ -27,7 +27,6 @@ window.onload = function() {
   filters = new Filters();
   data = locache.get("blueGuideData");
   locache.set("blueGuideData", data);
-  filters.draw("#filters", "#showFilters");
   if ((data != null) && (data.rev != null) && data.rev === rev) {
     query = new JsonQuery("body", data);
   } else {
@@ -36,9 +35,9 @@ window.onload = function() {
       locache.set("blueGuideData", data);
       query = new JsonQuery("body", data);
       console.log(data);
+      jQuery('<textarea></textarea>').val(JSON.stringify(data)).prependTo('.links');
     });`
     googleQuery.get "select *"
-    console.log data
     */
 
     jQuery.getJSON("json/data.json?rev=" + rev, {}, function(data) {
@@ -46,25 +45,32 @@ window.onload = function() {
       return query = new JsonQuery("body", data);
     });
   }
+  if (window.responsive !== "mobile") {
+    $('.row-fluid>div').height($(window).height() - $('.navbar').height());
+  }
   params = {
     id: "map",
     updateSelector: "body",
     draw: true,
     resultsSelector: "#results",
     showPopup: window.responsive !== "mobile",
-    startLat: 38.659777730712534,
-    startLng: -105.8203125,
-    startZoom: 7,
+    startLat: 33.50819,
+    startLng: -86.787808,
+    startZoom: 8,
     geosearch: {
       provider: "Google",
       settings: {
-        zoomLevel: 13
+        searchLabel: "Search for address...",
+        zoomLevel: 13,
+        showMarker: false,
+        open: true
       }
     },
     locate: {
       html: ich.locateBtn()
     },
-    layerUrl: "http://a.tiles.mapbox.com/v3/albatrossdigital.map-i5m0mag7/{z}/{x}/{y}.png",
+    layerUrl: "http://a.tiles.mapbox.com/v3/albatrossdigital.h0jccb8e/{z}/{x}/{y}.png",
+    retinaLayerUrl: "http://a.tiles.mapbox.com/v3/albatrossdigital.h0jccb8e/{z}/{x}/{y}.png",
     fields: filters.displayFields,
     tabs: filters.tabs,
     pagerSize: window.responsive !== "mobile" ? 25 : 10
@@ -98,16 +104,16 @@ window.onload = function() {
   });
   if (window.responsive === "mobile") {
     $about = ich.about();
-    $search = $("#map .leaflet-top.leaflet-center").clone();
-    $search.find('#leaflet-control-geosearch-submit').bind("click", function() {
-      $("#map #leaflet-control-geosearch-qry").val($(this).parent().find("#leaflet-control-geosearch-qry").val());
-      return $("#map #leaflet-control-geosearch-submit").trigger("click");
-    });
-    $search.find('#geocode').bind("click", function() {
-      return $("#map #geocode").trigger("click");
-    });
+    /*$search = $("#map .leaflet-top.leaflet-left").clone()
+    #$search.find('.leaflet-control-geosearch').removeClass "leaflet-control-geosearch"
+    $search.find('#leaflet-control-geosearch-submit').bind "click", ->
+      $("#map #leaflet-control-geosearch-qry").val $(this).parent().find("#leaflet-control-geosearch-qry").val()
+      $("#map #leaflet-control-geosearch-submit").trigger "click"
+    $search.find('#geocode').bind "click", ->
+      $("#map #geocode").trigger "click"
+    */
+
     $("#main").append($about);
-    $("#main #about").append($search);
   } else {
     $("#map .leaflet-control-container").prepend(ich.about());
   }

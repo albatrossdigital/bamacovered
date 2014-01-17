@@ -11,7 +11,7 @@ GoogleSpreadsheetsQuery = function(filters, callback) {
     if (query !== undefined) {
       locache.remove("blueGuideData");
       data = {
-        key: "0Alw0s_pQVmyXdEwxTjlaTlE3NnU0bl8wZEZxZTVHYnc",
+        key: "0AlaP5UvLJD2wdDkzWEJSR0VVVFZsODBJUmZVeEFjZEE",
         tq: query
       };
       return $.ajax({

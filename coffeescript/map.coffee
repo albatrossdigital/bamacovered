@@ -21,14 +21,23 @@ Map = (options) ->
   @init = false;
 
   @drawMap = ->
-
     # Create the map
     @map = new L.Map(@options.id,
       center: new L.LatLng(@options.startLat, @options.startLng)
       zoom: @options.startZoom
-      layers: new L.TileLayer @options.layerUrl,
-        attribution: '<span>Built by <a href="http://albatrossdigital.com" title="Albatross Digital">Albatross Digital</a> | </span><a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
+      attributionControl: false
+      #layers: new L.TileLayer @options.layerUrl
     )
+
+    # Add the tile layer (and add retina support)
+    @retina = window.devicePixelRatio >= 2
+    if (@retina and @options.retinaLayerUrl?)
+      # Retina tiles are sized 1/2 of normal tiles for twice the pixel density
+      @map.tileSize = { x: 128, y: 128 }
+      @map.addLayer new L.TileLayer @options.retinaLayerUrl
+    else
+      @map.addLayer new L.TileLayer @options.layerUrl
+
     @markerLayer.addTo @map
     @homeMarkerLayer.addTo @map
 
@@ -38,6 +47,7 @@ Map = (options) ->
         zoomLevel: @options.maxZoom
         submitButton: true
       )
+
       settings.provider = new L.GeoSearch.Provider[@options.geosearch.provider]()
       new L.Control.GeoSearch(settings).addTo @map
 
@@ -49,9 +59,10 @@ Map = (options) ->
         setView: true
         maxZoom: @options.maxZoom
       )
-      $(@options.locate.html).bind "click", (e) ->
+      $(@options.locate.html).bind "click touchstart", (e) ->
         that.map.locate settings
-      .appendTo "#map .leaflet-top.leaflet-center"
+        L.DomEvent.preventDefault e
+      .appendTo "#map .leaflet-top.leaflet-left"
 
     return
 
@@ -140,7 +151,7 @@ Map = (options) ->
           title: item["Clinic Name"]
         )
 
-        .on("click", (e) ->
+        .on("click touchstart", (e) ->
           $item = $results.find(".item[rel=" + @_leaflet_id + "]")
           $results.find('.item.active').removeClass "active"
           $item.addClass "active"
@@ -148,6 +159,7 @@ Map = (options) ->
         )
 
         if that.options.showPopup
+          console.log(item)
           marker.bindPopup(ich.popupItem(item).html(),
             closeButton: true
           )
@@ -163,7 +175,16 @@ Map = (options) ->
         item.id = marker._leaflet_id
         item.letter = marker.options.icon.num2letter(index)
         item.distance = Math.round(item.distance * 10) / 10
+        console.log(item)
         $resultItem = ich.listItem(item)
+
+        if window.responsive is "mobile"
+          $resultItem.find(".static-marker").bind "click", (e) ->
+            $item = $(this).parents(".item")
+            if $item.hasClass('active')
+              $item.removeClass "active"
+            else
+              that.scroll "body", 0
 
         $resultItem.find(".static-marker, h3 a").bind "click", (e) ->
           $item = $(this).parents(".item")
@@ -173,24 +194,24 @@ Map = (options) ->
             marker = that.markerLayer._layers[$item.attr("rel")]
             #marker.zIndexOffset 1000
             that.map.panTo(marker._latlng)
-            if window.responsive is "mobile"
-              $item.parent().find('.item.active').removeClass "active"
-            else
+            if window.responsive isnt "mobile"
               marker.openPopup()
             $item.addClass "active"
           false
 
         $resultItem.find(".close").bind "click", ->
           that.closeItem($(this).parents(".item"))
+          that.scroll "body", 0 if window.responsive is "mobile"
 
-        $resultItem.find(".btn-directions").bind "click", ->
+        $resultItem.find(".btn-directions").bind "click touchstart", ->
+          latlng = $(this).attr 'rel'
           if window.os is "android"
-            navigator.app.loadUrl "http://maps.google.com/maps?daddr=" + item["Latitude"] + "," + item["Longitude"], { openExternal: true }
+            navigator.app.loadUrl "http://maps.google.com/maps?daddr=" + latlng, { openExternal: true }
             #window.location = 'gps:' + item["Latitude"] + "," + item["Longitude"]
           else if window.os is "ios"
-            window.location = 'maps:' + item["Latitude"] + "," + item["Longitude"]
+            window.location = 'maps:' + latlng
           else
-            window.open "http://maps.google.com/maps?daddr=" + item["Latitude"] + "," + item["Longitude"]
+            window.open "http://maps.google.com/maps?daddr=" + latlng
 
         if window.os is "android" or window.os is "ios"
           $resultItem.find(".website").bind "click", ->

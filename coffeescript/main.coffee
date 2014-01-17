@@ -1,6 +1,6 @@
 query = undefined
 tab = undefined
-rev = 0.14
+rev = 0.1
 activeTab = undefined
 window.onload = ->
 
@@ -21,7 +21,7 @@ window.onload = ->
   data = locache.get("blueGuideData")
   #data = null
   locache.set("blueGuideData", data)
-  filters.draw "#filters", "#showFilters"
+  #filters.draw "#filters", "#showFilters"
 
   # Get data if we need to
   if data? and data.rev? and data.rev is rev
@@ -32,14 +32,17 @@ window.onload = ->
       locache.set("blueGuideData", data);
       query = new JsonQuery("body", data);
       console.log(data);
+      jQuery('<textarea></textarea>').val(JSON.stringify(data)).prependTo('.links');
     });`
     googleQuery.get "select *"
-    console.log data
     ###
     jQuery.getJSON "json/data.json?rev="+rev, {}, (data) ->
       locache.set "blueGuideData", data
       query = new JsonQuery "body", data
+
     
+  # Manually set the map height with JS (couldn't make this work with CSS)
+  if window.responsive isnt "mobile" then $('.row-fluid>div').height $(window).height() - $('.navbar').height()
 
   params = 
     id: "map"
@@ -47,15 +50,19 @@ window.onload = ->
     draw: true
     resultsSelector: "#results"
     showPopup: window.responsive isnt "mobile"
-    startLat: 38.659777730712534
-    startLng: -105.8203125
-    startZoom: 7
+    startLat: 33.50819
+    startLng: -86.787808
+    startZoom: 8
     geosearch:
       provider: "Google"
       settings:
+        searchLabel: "Search for address..."
         zoomLevel: 13 
+        showMarker: false
+        open: true
     locate: {html: ich.locateBtn()}   
-    layerUrl: "http://a.tiles.mapbox.com/v3/albatrossdigital.map-i5m0mag7/{z}/{x}/{y}.png"
+    layerUrl: "http://a.tiles.mapbox.com/v3/albatrossdigital.h0jccb8e/{z}/{x}/{y}.png"
+    retinaLayerUrl: "http://a.tiles.mapbox.com/v3/albatrossdigital.h0jccb8e/{z}/{x}/{y}.png"
     fields: filters.displayFields
     tabs: filters.tabs
     pagerSize: if window.responsive isnt "mobile" then 25 else 10
@@ -93,17 +100,18 @@ window.onload = ->
 
 
   # Add overlay (for start page)
+  
   if window.responsive is "mobile"
     $about = ich.about()
-    $search = $("#map .leaflet-top.leaflet-center").clone()
+    ###$search = $("#map .leaflet-top.leaflet-left").clone()
     #$search.find('.leaflet-control-geosearch').removeClass "leaflet-control-geosearch"
     $search.find('#leaflet-control-geosearch-submit').bind "click", ->
       $("#map #leaflet-control-geosearch-qry").val $(this).parent().find("#leaflet-control-geosearch-qry").val()
       $("#map #leaflet-control-geosearch-submit").trigger "click"
     $search.find('#geocode').bind "click", ->
-      $("#map #geocode").trigger "click"
+      $("#map #geocode").trigger "click"###
     $("#main").append $about
-    $("#main #about").append $search
+    #$("#main #about").append $search
   else
     $("#map .leaflet-control-container").prepend ich.about()
 

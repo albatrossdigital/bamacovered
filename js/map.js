@@ -23,10 +23,18 @@ Map = function(options) {
     this.map = new L.Map(this.options.id, {
       center: new L.LatLng(this.options.startLat, this.options.startLng),
       zoom: this.options.startZoom,
-      layers: new L.TileLayer(this.options.layerUrl, {
-        attribution: '<span>Built by <a href="http://albatrossdigital.com" title="Albatross Digital">Albatross Digital</a> | </span><a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
-      })
+      attributionControl: false
     });
+    this.retina = window.devicePixelRatio >= 2;
+    if (this.retina && (this.options.retinaLayerUrl != null)) {
+      this.map.tileSize = {
+        x: 128,
+        y: 128
+      };
+      this.map.addLayer(new L.TileLayer(this.options.retinaLayerUrl));
+    } else {
+      this.map.addLayer(new L.TileLayer(this.options.layerUrl));
+    }
     this.markerLayer.addTo(this.map);
     this.homeMarkerLayer.addTo(this.map);
     if (this.options.geosearch != null) {
@@ -45,9 +53,10 @@ Map = function(options) {
         setView: true,
         maxZoom: this.options.maxZoom
       });
-      $(this.options.locate.html).bind("click", function(e) {
-        return that.map.locate(settings);
-      }).appendTo("#map .leaflet-top.leaflet-center");
+      $(this.options.locate.html).bind("click touchstart", function(e) {
+        that.map.locate(settings);
+        return L.DomEvent.preventDefault(e);
+      }).appendTo("#map .leaflet-top.leaflet-left");
     }
   };
   this.updateLocation = function(latlng) {
@@ -128,7 +137,7 @@ Map = function(options) {
             color: item.color
           }),
           title: item["Clinic Name"]
-        }).on("click", function(e) {
+        }).on("click touchstart", function(e) {
           var $item;
           $item = $results.find(".item[rel=" + this._leaflet_id + "]");
           $results.find('.item.active').removeClass("active");
@@ -136,6 +145,7 @@ Map = function(options) {
           return that.scroll($results, $item);
         });
         if (that.options.showPopup) {
+          console.log(item);
           marker.bindPopup(ich.popupItem(item).html(), {
             closeButton: true
           }).on("popupclose", function(e) {
@@ -148,7 +158,19 @@ Map = function(options) {
         item.id = marker._leaflet_id;
         item.letter = marker.options.icon.num2letter(index);
         item.distance = Math.round(item.distance * 10) / 10;
+        console.log(item);
         $resultItem = ich.listItem(item);
+        if (window.responsive === "mobile") {
+          $resultItem.find(".static-marker").bind("click", function(e) {
+            var $item;
+            $item = $(this).parents(".item");
+            if ($item.hasClass('active')) {
+              return $item.removeClass("active");
+            } else {
+              return that.scroll("body", 0);
+            }
+          });
+        }
         $resultItem.find(".static-marker, h3 a").bind("click", function(e) {
           var $item;
           $item = $(this).parents(".item");
@@ -157,9 +179,7 @@ Map = function(options) {
           } else {
             marker = that.markerLayer._layers[$item.attr("rel")];
             that.map.panTo(marker._latlng);
-            if (window.responsive === "mobile") {
-              $item.parent().find('.item.active').removeClass("active");
-            } else {
+            if (window.responsive !== "mobile") {
               marker.openPopup();
             }
             $item.addClass("active");
@@ -167,17 +187,22 @@ Map = function(options) {
           return false;
         });
         $resultItem.find(".close").bind("click", function() {
-          return that.closeItem($(this).parents(".item"));
+          that.closeItem($(this).parents(".item"));
+          if (window.responsive === "mobile") {
+            return that.scroll("body", 0);
+          }
         });
-        $resultItem.find(".btn-directions").bind("click", function() {
+        $resultItem.find(".btn-directions").bind("click touchstart", function() {
+          var latlng;
+          latlng = $(this).attr('rel');
           if (window.os === "android") {
-            return navigator.app.loadUrl("http://maps.google.com/maps?daddr=" + item["Latitude"] + "," + item["Longitude"], {
+            return navigator.app.loadUrl("http://maps.google.com/maps?daddr=" + latlng, {
               openExternal: true
             });
           } else if (window.os === "ios") {
-            return window.location = 'maps:' + item["Latitude"] + "," + item["Longitude"];
+            return window.location = 'maps:' + latlng;
           } else {
-            return window.open("http://maps.google.com/maps?daddr=" + item["Latitude"] + "," + item["Longitude"]);
+            return window.open("http://maps.google.com/maps?daddr=" + latlng);
           }
         });
         if (window.os === "android" || window.os === "ios") {
