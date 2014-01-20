@@ -140,7 +140,7 @@ Map = (options) ->
 
         # Add the marker
         item.color = (if activeColor then activeColor else that.iconColor(item["Services Provided"]))
-        item["Phone Number"] = item["Phone Number"] + " |" if item["Phone Number"] isnt "" and item["Phone Number"].indexOf "|" is -1
+        #item["Phone Number"] = item["Phone Number"] + " |" if item["Phone Number"] isnt "" and item["Phone Number"].indexOf "|" is -1
 
         marker = L.marker([item.Latitude, item.Longitude],
           icon: L.AwesomeMarkers.icon(

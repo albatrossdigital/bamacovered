@@ -85,8 +85,8 @@
             <button id="showLocate" class="no-desktop pull-right btn btn-normal"><i class="icon-search"></i></button>
 
             <ul class="nav nav-pills pull-right">
-              <li><a href="http://cohealthinitiative.org/health-coverage-resources" target="_blank">Coverage Resources</a></li>
-              <li><a href="http://cohealthinitiative.org/blue-guide-download" target="_blank">Download the Guide</a></li>
+              <li><a href="http://www.bamacovered.org/resources" target="_blank">Coverage Resources</a></li>
+              <li><a href="mailto:Contact@bamacovered.org">Contact Us</a></li>
             </ul>
           </div>
 
@@ -140,7 +140,12 @@
     <p>Search Nearby - or - Select an Option from the menu to get started.<p>
     <div class="summary">
       <p class="no-mobile">The purpose of this map is to help individuals and families, healthcare providers, and community organizations locate healthcare resources and better understand the insurance options that are available throughout Alabama. Each site provides navigators or certified application counselors who are trained to help walk Alabamians through the enrollment process.
-      </p>     
+      </p>   
+      <p class="">
+        This guide was prepared by <a href="http://www.bamacovered.org" target="_blank">Bama Covered</a>, the 1st-ever student-powered grassroots movement to inform a state's citizens about their healthcare options.
+      </p>
+      <p class="">Alabama Students. Alabama Families. Alabama Options. Bama Covered.<p>
+      <p class="no-mobile site-by">Built by <a href="http://albatrossdigital.com" target="_blank">Albatross Digital</a></p>
     </div>
   </div>
 </script>
@@ -246,7 +251,7 @@
       <h3><a href="#">{{Clinic Name}} <span> ({{distance}} miles)</a></span></h3>
       <p>
         {{Address Line 1}}, {{City}}, {{State}}<br/>
-        {{Phone Number}} <a href="mailto:{{Email}}" target="">Send email</a> <!--<a href="{{Website}}" target="_blank">View website</a>-->
+        {{Phone Number}} {{#Email}}{{#Phone Number}}| {{/Phone Number}}<a href="mailto:{{Email}}" target="">Send email</a>{{/Email}} <!--<a href="{{Website}}" target="_blank">View website</a>-->
       </p>
       <button class="btn btn-normal not-primary btn-directions" rel="{{Latitude}},{{Longitude}}"><i class="icon-directions"></i> Get Directions</button>
     </div>
@@ -272,7 +277,7 @@
     <h3>{{Clinic Name}}</h3>
     <p>
       {{Full Address}}<br/>
-      {{{Phone Number}}} <a href="mailto:{{Email}}" target="">{{Email}}</a> <!--<a href="{{Website}}" target="_blank">View website</a>-->
+      {{{Phone Number}}} {{#Email}}{{#Phone Number}}| {{/Phone Number}}<a href="mailto:{{Email}}" target="">{{Email}}</a>{{/Email}} <!--<a href="{{Website}}" target="_blank">View website</a>-->
     </p>
     <div class="fields">{{{primaryFields}}}</div>
   </div>

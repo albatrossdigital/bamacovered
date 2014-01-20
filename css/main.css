@@ -392,16 +392,21 @@
   background-position: -410px 0;
 }
 /* line 49, ../sass/components/_overlay.sass */
+.overlay-active #about .summary .site-by {
+  font-size: 0.9em;
+  margin-top: 2em;
+}
+/* line 53, ../sass/components/_overlay.sass */
 .overlay-active #map {
   border-right: none !important;
 }
-/* line 52, ../sass/components/_overlay.sass */
+/* line 56, ../sass/components/_overlay.sass */
 .overlay-active #map .leaflet-top.leaflet-left {
   margin-left: 7em;
   margin-top: 9em;
   width: 120%;
 }
-/* line 57, ../sass/components/_overlay.sass */
+/* line 61, ../sass/components/_overlay.sass */
 .overlay-active #map .leaflet-top.leaflet-left .leaflet-control-zoom {
   display: none;
 }
@@ -982,16 +987,16 @@ h2 {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  background-color: #387cc0;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #387cc0), color-stop(100%, #4b89c6));
-  background-image: -webkit-linear-gradient(#387cc0, #4b89c6);
-  background-image: -moz-linear-gradient(#387cc0, #4b89c6);
-  background-image: -o-linear-gradient(#387cc0, #4b89c6);
-  background-image: linear-gradient(#387cc0, #4b89c6);
+  background-color: #00a1e3;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00a1e3), color-stop(100%, #19aae5));
+  background-image: -webkit-linear-gradient(#00a1e3, #19aae5);
+  background-image: -moz-linear-gradient(#00a1e3, #19aae5);
+  background-image: -o-linear-gradient(#00a1e3, #19aae5);
+  background-image: linear-gradient(#00a1e3, #19aae5);
   border: none;
-  -webkit-box-shadow: #00a1e3 0 1px 1px;
-  -moz-box-shadow: #00a1e3 0 1px 1px;
-  box-shadow: #00a1e3 0 1px 1px;
+  -webkit-box-shadow: #007db0 0 1px 1px;
+  -moz-box-shadow: #007db0 0 1px 1px;
+  box-shadow: #007db0 0 1px 1px;
   color: white;
   text-shadow: none;
   font-weight: bold;
@@ -1005,10 +1010,10 @@ h2 {
 #leaflet-control-geosearch-submit:focus,
 #leaflet-control-geosearch-submit:hover,
 #leaflet-control-geosearch-submit.active {
-  background-color: #4585c4;
-  -webkit-box-shadow: #00a1e3 2px -1px -1px;
-  -moz-box-shadow: #00a1e3 2px -1px -1px;
-  box-shadow: #00a1e3 2px -1px -1px;
+  background-color: #11a7e4;
+  -webkit-box-shadow: #007db0 2px -1px -1px;
+  -moz-box-shadow: #007db0 2px -1px -1px;
+  box-shadow: #007db0 2px -1px -1px;
   color: white;
   outline: 0;
 }
@@ -1016,7 +1021,7 @@ h2 {
 .btn-normal.active,
 .btn-dark.active,
 #leaflet-control-geosearch-submit.active {
-  background-color: #73a3d2;
+  background-color: #4cbdeb;
 }
 /* line 51, ../sass/components/_style.sass */
 .btn-normal i,
@@ -1036,11 +1041,11 @@ h2 {
 .btn-normal.btn-dark,
 .btn-dark.btn-dark,
 #leaflet-control-geosearch-submit.btn-dark {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00a1e3), color-stop(100%, #19aae5));
-  background-image: -webkit-linear-gradient(#00a1e3, #19aae5);
-  background-image: -moz-linear-gradient(#00a1e3, #19aae5);
-  background-image: -o-linear-gradient(#00a1e3, #19aae5);
-  background-image: linear-gradient(#00a1e3, #19aae5);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #007db0), color-stop(100%, #198ab7));
+  background-image: -webkit-linear-gradient(#007db0, #198ab7);
+  background-image: -moz-linear-gradient(#007db0, #198ab7);
+  background-image: -o-linear-gradient(#007db0, #198ab7);
+  background-image: linear-gradient(#007db0, #198ab7);
 }
 /* line 62, ../sass/components/_style.sass */
 .btn-normal.btn-dark:focus, .btn-normal.btn-dark:hover,
@@ -1048,7 +1053,7 @@ h2 {
 .btn-dark.btn-dark:hover,
 #leaflet-control-geosearch-submit.btn-dark:focus,
 #leaflet-control-geosearch-submit.btn-dark:hover {
-  background-color: #11a7e4;
+  background-color: #1186b5;
 }
 
 /* line 67, ../sass/components/_style.sass */
@@ -1157,7 +1162,7 @@ label {
 /* line 93, ../sass/components/_style.sass */
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: #265288;
+  background-color: #a60006;
 }
 
 /* line 97, ../sass/components/_style.sass */

@@ -127,9 +127,6 @@ Map = function(options) {
           }
         });
         item.color = (activeColor ? activeColor : that.iconColor(item["Services Provided"]));
-        if (item["Phone Number"] !== "" && item["Phone Number"].indexOf("|" === -1)) {
-          item["Phone Number"] = item["Phone Number"] + " |";
-        }
         marker = L.marker([item.Latitude, item.Longitude], {
           icon: L.AwesomeMarkers.icon({
             text: index,
