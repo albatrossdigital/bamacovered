@@ -81,9 +81,10 @@ Map = (options) ->
     ).addTo @homeMarkerLayer
 
   @drawMarkers = (data, pagerStart) ->
-    if !@init
-      @init = true
-      return
+    # This doesn't seem to be necessary for bamacovered
+    #if !@init
+    #  @init = true
+    #  return
 
     @markerLayer.clearLayers()
     @pagerStart = if pagerStart? then pagerStart else 0
@@ -159,7 +160,6 @@ Map = (options) ->
         )
 
         if that.options.showPopup
-          console.log(item)
           marker.bindPopup(ich.popupItem(item).html(),
             closeButton: true
           )
@@ -175,7 +175,6 @@ Map = (options) ->
         item.id = marker._leaflet_id
         item.letter = marker.options.icon.num2letter(index)
         item.distance = Math.round(item.distance * 10) / 10
-        console.log(item)
         $resultItem = ich.listItem(item)
 
         if window.responsive is "mobile"

@@ -15,7 +15,7 @@ Filters = ->
     ich.accordion(sections: [
       id: "tabs"
       open: "in"
-      title: "Type of Care"
+      title: "Type of Clinic"
       content: ich.tabs(
         tabs: @tabs
       , true)
@@ -62,11 +62,17 @@ Filters = ->
     i = 0
     values = {}
     # Add services (from tabs)
+    ###
     if activeTab? and activeTab isnt "All Types"
       values["Services Provided"] = _.filter(@tabs, (tab) ->
         tab.title is activeTab
       )[0].services
-    
+    ###
+
+    # Add tabs (bamaguide only)
+    if activeTab? and activeTab isnt "All Types"
+      values["Tab"] = [activeTab]
+
     # Add search
     val = $("#field-search").val()
     values["search"] = val if val?
@@ -80,40 +86,21 @@ Filters = ->
 
   @tabs = [
     title: "All Types"
-    color: "orange"
+    color: "red"
     icon: "icon-alltypes"
     services: []
   ,
-    title: "General Health"
+    title: "CACs/Navs"
     color: "green"
     icon: "icon-generalhealth"
     services: ["Case Management", "Primary Health Care", "Women's Health", "Children's Health", "Adolescent Care", "Immunizations", "Chronic Disease Mgmt", "STI Testing, Treatment, & Prevention", "HIV/AIDS Treatment & Care", "Health Care for Military Veterans", "LGBT Health Services"]
   ,
-    title: "Mental / Behavioral"
+    title: "Free/Low Cost Clinics"
     color: "purple"
     icon: "icon-alltypes"
     services: ["Substance Abuse Treatment", "Mental/Behavioral Health Care"]
-  ,
-    title: "Access Assistance"
-    color: "red"
-    icon: "icon-mentalbehavioural"
-    services: ["Medicaid Enrollment Assistance", "Connect for Health Colorado Enrollment Assistance"]
-  ,
-    title: "Oral / Dental"
-    color: "blue"
-    icon: "icon-dentaloral"
-    services: ["Dental Care"]
-  ,
-    title: "Disability & Elder Care"
-    color: "darkblue"
-    icon: "icon-disability"
-    services: ["Health Care for Disabilities or Special Needs", "Adult Day Services", "Respite Care"]
-  ,
-    title: "Other"
-    color: "cadetblue"
-    icon: "icon-other"
-    services: ["Vision Care", "Other"]
   ]
+  ###
   @fields =
     "Safety-Net Type":
       type: "select"
@@ -151,7 +138,7 @@ Filters = ->
       msg: "Select one"
       startCol: "CU"
       options: ["Sliding Scale for Primary Care", "Cash/Time of Service Discount", "CICP Services", "Medicaid/CHP+ Accepted", "Other Discount Services", "Open Late / Weekends", "Other ?"]
-
+  ###
   @displayFields = [
     label: "Hours"
     col: "Hours"

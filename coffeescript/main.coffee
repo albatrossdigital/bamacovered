@@ -1,6 +1,6 @@
 query = undefined
 tab = undefined
-rev = 0.14
+rev = 0.15
 activeTab = undefined
 window.onload = ->
 
@@ -21,7 +21,7 @@ window.onload = ->
   data = locache.get("blueGuideData")
   #data = null
   locache.set("blueGuideData", data)
-  #filters.draw "#filters", "#showFilters"
+  filters.draw "#filters", "#showFilters"
 
   # Get data if we need to
   if data? and data.rev? and data.rev is rev

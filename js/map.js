@@ -75,10 +75,6 @@ Map = function(options) {
   };
   this.drawMarkers = function(data, pagerStart) {
     var $resultItem, $results, $text, activeColor, index, item, location, marker, pagerEnd, _i, _ref;
-    if (!this.init) {
-      this.init = true;
-      return;
-    }
     this.markerLayer.clearLayers();
     this.pagerStart = pagerStart != null ? pagerStart : 0;
     location = (this.location !== undefined ? this.location : this.map.getCenter());
@@ -142,7 +138,6 @@ Map = function(options) {
           return that.scroll($results, $item);
         });
         if (that.options.showPopup) {
-          console.log(item);
           marker.bindPopup(ich.popupItem(item).html(), {
             closeButton: true
           }).on("popupclose", function(e) {
@@ -155,7 +150,6 @@ Map = function(options) {
         item.id = marker._leaflet_id;
         item.letter = marker.options.icon.num2letter(index);
         item.distance = Math.round(item.distance * 10) / 10;
-        console.log(item);
         $resultItem = ich.listItem(item);
         if (window.responsive === "mobile") {
           $resultItem.find(".static-marker").bind("click", function(e) {

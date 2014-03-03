@@ -20,7 +20,7 @@ Filters = function() {
         {
           id: "tabs",
           open: "in",
-          title: "Type of Care",
+          title: "Type of Clinic",
           content: ich.tabs({
             tabs: this.tabs
           }, true)
@@ -70,10 +70,15 @@ Filters = function() {
     var i, val, values;
     i = 0;
     values = {};
+    /*
+    if activeTab? and activeTab isnt "All Types"
+      values["Services Provided"] = _.filter(@tabs, (tab) ->
+        tab.title is activeTab
+      )[0].services
+    */
+
     if ((typeof activeTab !== "undefined" && activeTab !== null) && activeTab !== "All Types") {
-      values["Services Provided"] = _.filter(this.tabs, function(tab) {
-        return tab.title === activeTab;
-      })[0].services;
+      values["Tab"] = [activeTab];
     }
     val = $("#field-search").val();
     if (val != null) {
@@ -91,80 +96,61 @@ Filters = function() {
   this.tabs = [
     {
       title: "All Types",
-      color: "orange",
+      color: "red",
       icon: "icon-alltypes",
       services: []
     }, {
-      title: "General Health",
+      title: "CACs/Navs",
       color: "green",
       icon: "icon-generalhealth",
       services: ["Case Management", "Primary Health Care", "Women's Health", "Children's Health", "Adolescent Care", "Immunizations", "Chronic Disease Mgmt", "STI Testing, Treatment, & Prevention", "HIV/AIDS Treatment & Care", "Health Care for Military Veterans", "LGBT Health Services"]
     }, {
-      title: "Mental / Behavioral",
+      title: "Free/Low Cost Clinics",
       color: "purple",
       icon: "icon-alltypes",
       services: ["Substance Abuse Treatment", "Mental/Behavioral Health Care"]
-    }, {
-      title: "Access Assistance",
-      color: "red",
-      icon: "icon-mentalbehavioural",
-      services: ["Medicaid Enrollment Assistance", "Connect for Health Colorado Enrollment Assistance"]
-    }, {
-      title: "Oral / Dental",
-      color: "blue",
-      icon: "icon-dentaloral",
-      services: ["Dental Care"]
-    }, {
-      title: "Disability & Elder Care",
-      color: "darkblue",
-      icon: "icon-disability",
-      services: ["Health Care for Disabilities or Special Needs", "Adult Day Services", "Respite Care"]
-    }, {
-      title: "Other",
-      color: "cadetblue",
-      icon: "icon-other",
-      services: ["Vision Care", "Other"]
     }
   ];
-  this.fields = {
-    "Safety-Net Type": {
-      type: "select",
-      msg: "Select type of care",
-      startCol: "Y",
-      options: ["Community Health Center (CHC) / Federally Qualified Health Center (FQHC)", "Community-funded Safety Net Clinic (CSNC)", "Local Public Health Department and Public Nursing Services", "Rural Health Clinics (RHC)", "School-based Health Center (SBHC)", "Human/Social Services Agency", "Certified Medicaid/CHP+ Application Assistance Site", "Connect for Health Colorado Assistance Site", "WIC Clinic Site", "HCP Pediatric Specialty Clinic", "Planned Parenthood Clinic", "Veteran's Association Health Center", "Community Mental Health Clinic", "Community-based Dental Clinic", "Community-based Vision Clinic", "Critical Access Hospital", "Emergency Department", "CICP Provider", "Community Centered Boards (CCB)", "Residency Program", "Voluntary Health Organization ", "Migrant Health Center", "Refugee Health Site", "Certified Center for Independent Living", "AIDS Service Organization (ASO)", "Other Community-based Clinic", "Other Dental Clinic", "Other Mental Health Clinic", "Other Community-based Organization"]
-    },
-    "Services Provided": {
-      type: "select",
-      msg: "Select services",
-      startCol: "BB",
+  /*
+  @fields =
+    "Safety-Net Type":
+      type: "select"
+      msg: "Select type of care"
+      startCol: "Y"
+      options: ["Community Health Center (CHC) / Federally Qualified Health Center (FQHC)","Community-funded Safety Net Clinic (CSNC)","Local Public Health Department and Public Nursing Services","Rural Health Clinics (RHC)","School-based Health Center (SBHC)","Human/Social Services Agency","Certified Medicaid/CHP+ Application Assistance Site","Connect for Health Colorado Assistance Site","WIC Clinic Site","HCP Pediatric Specialty Clinic","Planned Parenthood Clinic","Veteran's Association Health Center","Community Mental Health Clinic","Community-based Dental Clinic","Community-based Vision Clinic","Critical Access Hospital","Emergency Department","CICP Provider","Community Centered Boards (CCB)","Residency Program","Voluntary Health Organization ","Migrant Health Center","Refugee Health Site","Certified Center for Independent Living","AIDS Service Organization (ASO)","Other Community-based Clinic","Other Dental Clinic","Other Mental Health Clinic","Other Community-based Organization"]
+  
+    "Services Provided":
+      type: "select"
+      msg: "Select services"
+      startCol: "BB"
       options: ["Primary Health Care", "Dental Care", "Vision Care", "Mental/Behavioral Health Care", "Women's Health", "Children's Health", "Adolescent Care", "Adult Day Services", "Respite Care", "Substance Abuse Treatment", "Case Management", "Chronic Disease Mgmt", "HIV/AIDS Treatment & Care", "STI Testing, Treatment, & Prevention", "Health Care for Military Veterans", "Health Care for Disabilities or Special Needs", "LGBT Health Services", "Immunizations", "Medicaid Enrollment Assistance", "Connect for Health Colorado Enrollment Assistance", "Other"]
-    },
-    "Age Groups Served": {
-      type: "select",
-      msg: "Select age groups",
-      startCol: "BW",
+  
+    "Age Groups Served":
+      type: "select"
+      msg: "Select age groups"
+      startCol: "BW"
       options: ["Infants (0-3)", "Children (3+)", "Teens (13+)", "Adults (18+)", "Elderly (65+)"]
-    },
-    "Works With": {
-      label: "Populations Served",
-      type: "select",
-      msg: "Select a specialization",
-      startCol: "CB",
+  
+    "Works With":
+      label: "Populations Served"
+      type: "select"
+      msg: "Select a specialization"
+      startCol: "CB"
       options: ["Migrant Farmworkers", "Homeless", "LGBT", "Refugee", "American Indian", "Military Veterans", "HIV/AIDS", "Disability & Special Needs", "Rural", "Other"]
-    },
-    "Languages Spoken": {
-      type: "select",
-      msg: "Select specific populations",
-      startCol: "CL",
+  
+    "Languages Spoken":
+      type: "select"
+      msg: "Select specific populations"
+      startCol: "CL"
       options: ["Spanish", "German", "French", "Vietnamese", "Korean", "Chinese", "Arabic", "Phone Translation Services", "Other"]
-    },
-    "Payment Assistance & Special Accommodations": {
-      type: "select",
-      msg: "Select one",
-      startCol: "CU",
+  
+    "Payment Assistance & Special Accommodations":
+      type: "select"
+      msg: "Select one"
+      startCol: "CU"
       options: ["Sliding Scale for Primary Care", "Cash/Time of Service Discount", "CICP Services", "Medicaid/CHP+ Accepted", "Other Discount Services", "Open Late / Weekends", "Other ?"]
-    }
-  };
+  */
+
   this.displayFields = [
     {
       label: "Hours",

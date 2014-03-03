@@ -45,7 +45,9 @@ GoogleSpreadsheetsQuery = (filters, callback) ->
   @parse = (response) ->
     data = (if @data isnt `undefined` then @data else locache.get("blueGuideData"))
     status = (if data then true else false)
-    startCol = @colId2Int(@filters.fields["Safety-Net Type"].startCol)
+    #startCol = @colId2Int(@filters.fields["Safety-Net Type"].startCol)
+    # We hardcode this for bamacovered
+    startCol = @colId2Int("R")
     data = (if data then data else [])
     fields = undefined
     if response.table?
@@ -87,6 +89,7 @@ GoogleSpreadsheetsQuery = (filters, callback) ->
         rows: data
 
     @status = false
+    console.log @data
     callback @data
 
   @colId2Int = (id) ->

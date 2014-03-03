@@ -4,7 +4,7 @@ query = void 0;
 
 tab = void 0;
 
-rev = 0.14;
+rev = 0.15;
 
 activeTab = void 0;
 
@@ -27,6 +27,7 @@ window.onload = function() {
   filters = new Filters();
   data = locache.get("blueGuideData");
   locache.set("blueGuideData", data);
+  filters.draw("#filters", "#showFilters");
   if ((data != null) && (data.rev != null) && data.rev === rev) {
     query = new JsonQuery("body", data);
   } else {

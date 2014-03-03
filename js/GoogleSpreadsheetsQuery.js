@@ -54,7 +54,7 @@ GoogleSpreadsheetsQuery = function(filters, callback) {
     var data, fields, startCol, status;
     data = (this.data !== undefined ? this.data : locache.get("blueGuideData"));
     status = (data ? true : false);
-    startCol = this.colId2Int(this.filters.fields["Safety-Net Type"].startCol);
+    startCol = this.colId2Int("R");
     data = (data ? data : []);
     fields = void 0;
     if (response.table != null) {
@@ -100,6 +100,7 @@ GoogleSpreadsheetsQuery = function(filters, callback) {
       };
     }
     this.status = false;
+    console.log(this.data);
     return callback(this.data);
   };
   this.colId2Int = function(id) {
